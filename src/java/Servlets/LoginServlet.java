@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             }
             else{
-                session.setAttribute("usernamee", uname);
+                session.setAttribute("username", uname);
                 getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
             }
             
