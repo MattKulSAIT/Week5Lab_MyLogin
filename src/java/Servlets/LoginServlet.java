@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-//import models.AccountService; //Not sure why this isnt working
+import models.User;
 
 /**
  *
@@ -48,23 +48,25 @@ public class LoginServlet extends HttpServlet {
         
         String uname = request.getParameter("username");
         String passw = request.getParameter("password");
+        HttpSession session = request.getSession();
         
         if(uname != "" && passw != ""){
-            //TODO has to validate somehow
-            //if(AccountService.login(uname, passw) = null){
+            if(User.login(uname, passw) == null){
                 String error = "Invalid login";
                 request.setAttribute("message", error);
+                request.setAttribute("username", uname);
+                request.setAttribute("password", passw);
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             }
             else{
-                
+                session.setAttribute("usernamee", uname);
+                getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
             }
             
-            
-            
-            
-            getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
-            
+        }
+        else{
+                    
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
     }
-//}
+}
