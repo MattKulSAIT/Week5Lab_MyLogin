@@ -25,48 +25,57 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        
         String logout = request.getParameter("logout");
-        
         if(logout != null){
-            session.invalidate();
-            String loggedOut = "You have seccessfully logged out.";
-            request.setAttribute("message", loggedOut);
+                session.invalidate();
+        }
+        HttpSession session2 = request.getSession();
+        if(session2.getAttribute("username") != null){
+            getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+        }
+            
+        
+            
+
+            if(logout != null){
+                String loggedOut = "You have seccessfully logged out.";
+                request.setAttribute("message", loggedOut);
+                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            }
+            else{
+            //if the session exitst then you need to redirect to the homepage
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-        }
-        else{
-        //if the session exitst then you need to redirect to the homepage
-        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-        
-        }
-        
+
+            }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String uname = request.getParameter("username");
-        String passw = request.getParameter("password");
         HttpSession session = request.getSession();
-        
-        if(uname != "" && passw != ""){
-            if(User.login(uname, passw) == null){
-                String error = "Invalid login";
-                request.setAttribute("message", error);
-                request.setAttribute("username", uname);
-                request.setAttribute("password", passw);
+            String uname = request.getParameter("username");
+            String passw = request.getParameter("password");
+
+
+            if(uname != "" && passw != ""){
+                if(User.login(uname, passw) == null){
+                    String error = "Invalid login";
+                    request.setAttribute("message", error);
+                    request.setAttribute("username", uname);
+                    request.setAttribute("password", passw);
+                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+                }
+                else{
+                    session.setAttribute("username", uname);
+                    response.sendRedirect("http://localhost:8084/Week5Lab_MyLogin/home");
+                    //getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+                }
+
+            }
+
+            else{        
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             }
-            else{
-                session.setAttribute("username", uname);
-                response.sendRedirect("http://localhost:8084/Week5Lab_MyLogin/home");
-                //getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
-            }
-            
-        }
-        else{        
-            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
     }
-}
+
