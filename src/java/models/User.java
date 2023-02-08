@@ -16,7 +16,7 @@ public class User {
         this.password = password;
     }
     public static User login(String username, String password){
-        if(username.equals("abe")|| username.equals("barb") && password.equals("password")){
+        if(password.equals("password") && username.equals("abe")|| username.equals("barb")){
             User person = new User(username, password);
             return person;
         }

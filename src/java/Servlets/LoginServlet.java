@@ -60,12 +60,12 @@ public class LoginServlet extends HttpServlet {
             }
             else{
                 session.setAttribute("username", uname);
-                getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+                response.sendRedirect("http://localhost:8084/Week5Lab_MyLogin/home");
+                //getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
             }
             
         }
-        else{
-                    
+        else{        
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
     }
